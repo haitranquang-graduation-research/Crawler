@@ -3,26 +3,32 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+import requests
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.window import WindowTypes
 
 # from webdriver_manager.chrome import ChromeDriverManager
 # from selenium.webdriver.chrome.service import Service
-
-browser = webdriver.Chrome(executable_path="chromedriver.exe")
+options = Options()
+options.headless = True
+browser = webdriver.Chrome(executable_path="chromedriver_win32/chromedriver", options=options)
 # browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-links = ["https://vnexpress.net/the-gioi",
+links = [
+        "https://vnexpress.net/the-gioi",
          "https://vnexpress.net/kinh-doanh",
          "https://vnexpress.net/khoa-hoc",
-         "https://vnexpress.net/du-lich",
-         "https://vnexpress.net/giao-duc"]
+         "https://vnexpress.net/phap-luat",
+         "https://vnexpress.net/giao-duc",
+         "https://vnexpress.net/so-hoa",
+         "https://vnexpress.net/thoi-su"]
 
 all_urls = []
 
 
 def get_all_urls_from_link(link_input):
     browser.get(link_input)
-    sleep(5)
+    sleep(1)
     titles = browser.find_elements(by=By.CSS_SELECTOR, value=".title-news > a")
 
     sentences = []
@@ -33,7 +39,15 @@ def get_all_urls_from_link(link_input):
         if not title_link.startswith("https://vnexpress.net"):
             titles.remove(title)
         else:
+            body = {}
+            try:
+                body['url'] = title_link
+                print(body)
+                rq = requests.post(url='http://167.71.205.25:5000/parser', json=body)
+            except:
+                continue
             all_urls.append(title_link)
+            print(len(all_urls))
 
     # phần này để tách từng câu trong content bài viết
     # for title in titles:
@@ -66,6 +80,6 @@ def get_all_urls_from_link(link_input):
 for link in links:
     get_all_urls_from_link(link)
 
-for url in all_urls:
-    print("link: ", url)
+# for url in all_urls:
+#     print("link: ", url)
 
