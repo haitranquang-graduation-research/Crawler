@@ -1,10 +1,14 @@
 from random import randint
-from requests import head
+from requests import head, request
+import requests
+from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 
-browser = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver')
+options = Options()
+options.headless = True
+browser = webdriver.Chrome(executable_path='chromedriver_win32/chromedriver', options=options)
 
 while True:
     browser.get(
@@ -33,7 +37,14 @@ while True:
                     continue
 
                 next_news.click()
-                print(browser.current_url)
+                body = {}
+                try:
+                    body['url'] = browser.current_url
+                    print(body)
+                    rq = requests.post(url='http://167.71.205.25:5000/parser', json=body)
+                except:
+                    continue
+                # print(browser.current_url)
                 # browser.switch_to.window(browser.window_handles[1])
                 try:
                     header = browser.find_element(
