@@ -3,12 +3,17 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+import requests
 from selenium.webdriver.common.window import WindowTypes
-
+from selenium.webdriver.chrome.options import Options
 # from webdriver_manager.chrome import ChromeDriverManager
 # from selenium.webdriver.chrome.service import Service
+from config import parser_url
+options = Options()
+options.headless = True
+browser = webdriver.Chrome(
+    executable_path="chromedriver_win32/chromedriver", options=options)
 
-browser = webdriver.Chrome(executable_path="chromedriver.exe")
 # browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 links = ["https://dantri.com.vn/the-gioi.htm",
@@ -34,6 +39,15 @@ def get_all_urls_from_link(link_input):
         if not title_link.startswith("https://dantri.com"):
             titles.remove(title)
         else:
+            try:
+                body = {}
+                body['url'] = title_link
+                print(body)
+                rq = requests.post(
+                    url=parser_url(), json=body)
+            except Exception as e:
+                print(e)
+                continue
             all_urls.append(title_link)
 
     # phần này để tách từng câu trong content bài viết

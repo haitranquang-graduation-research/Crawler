@@ -1,2 +1,2 @@
 def parser_url():
-    return 'http://localhost:5000/parser'
+    return 'http://192.168.1.200:5000/parser'

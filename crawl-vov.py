@@ -11,9 +11,9 @@ from config import parser_url
 # from webdriver_manager.chrome import ChromeDriverManager
 # from selenium.webdriver.chrome.service import Service
 options = Options()
-# options.headless = True
+options.headless = True
 browser = webdriver.Chrome(
-    executable_path="chromedriver_win32/chromedriver")
+    executable_path="chromedriver_win32/chromedriver", options=options)
 # browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 links = ["https://vov.vn/chinh-tri/dang",
@@ -37,7 +37,7 @@ all_urls = []
 
 def get_all_urls_from_link(link_input):
     browser.get(link_input)
-    sleep(5)
+    sleep(1)
     titles = browser.find_elements(by=By.CSS_SELECTOR, value=".vovvn-title")
 
     sentences = []
