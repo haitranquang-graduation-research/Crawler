@@ -7,21 +7,28 @@ import requests
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.window import WindowTypes
 
+from config import parser_url
+
 # from webdriver_manager.chrome import ChromeDriverManager
 # from selenium.webdriver.chrome.service import Service
 options = Options()
 options.headless = True
-browser = webdriver.Chrome(executable_path="chromedriver_win32/chromedriver", options=options)
+browser = webdriver.Chrome(
+    executable_path="chromedriver_win32/chromedriver", options=options)
 # browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 links = [
-        "https://vnexpress.net/the-gioi",
-         "https://vnexpress.net/kinh-doanh",
-         "https://vnexpress.net/khoa-hoc",
-         "https://vnexpress.net/phap-luat",
-         "https://vnexpress.net/giao-duc",
-         "https://vnexpress.net/so-hoa",
-         "https://vnexpress.net/thoi-su"]
+    # "https://vnexpress.net/goc-nhin/binh-luan-nhieu",
+    # "https://vnexpress.net/goc-nhin/giao-duc-tri-thuc",
+    # "https://vnexpress.net/goc-nhin/van-hoa-loi-song",
+    # "https://vnexpress.net/goc-nhin/moi-truong",
+    "https://vnexpress.net/the-gioi",
+    "https://vnexpress.net/kinh-doanh",
+    "https://vnexpress.net/khoa-hoc",
+    "https://vnexpress.net/phap-luat",
+    "https://vnexpress.net/giao-duc",
+    "https://vnexpress.net/so-hoa",
+    "https://vnexpress.net/thoi-su"]
 
 all_urls = []
 
@@ -43,7 +50,9 @@ def get_all_urls_from_link(link_input):
             try:
                 body['url'] = title_link
                 print(body)
-                rq = requests.post(url='http://167.71.205.25:5000/parser', json=body)
+                print(parser_url())
+                rq = requests.post(
+                    url=parser_url(), json=body)
             except:
                 continue
             all_urls.append(title_link)
@@ -82,4 +91,3 @@ for link in links:
 
 # for url in all_urls:
 #     print("link: ", url)
-

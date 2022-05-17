@@ -6,9 +6,12 @@ from selenium import webdriver
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 
+from config import parser_url
+
 options = Options()
 options.headless = True
-browser = webdriver.Chrome(executable_path='chromedriver_win32/chromedriver', options=options)
+browser = webdriver.Chrome(
+    executable_path='chromedriver_win32/chromedriver', options=options)
 
 while True:
     browser.get(
@@ -41,7 +44,8 @@ while True:
                 try:
                     body['url'] = browser.current_url
                     print(body)
-                    rq = requests.post(url='http://167.71.205.25:5000/parser', json=body)
+                    rq = requests.post(
+                        url=parser_url(), json=body)
                 except:
                     continue
                 # print(browser.current_url)
