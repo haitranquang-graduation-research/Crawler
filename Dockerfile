@@ -4,4 +4,4 @@ RUN pip install selenium
 
 COPY . .
 
-CMD ["python","vnexpress_crawler.py"]
+CMD ["python","generic_crawler.py"]
