@@ -1,16 +1,16 @@
+
 import requests
 from pyquery import PyQuery
 from flask_restful import Api, Resource
 from flask import Flask
-
-
+import config
 app = Flask(__name__)
 api = Api(app)
 print('Hello')
 
 @app.route('/crawl', methods = ['GET'])
 def crawl():
-    rq = requests.get("http://192.168.1.200:9999/api/site/view/all")
+    rq = requests.get(config.get_news_specs_url())
     sites = rq.json()
     for site in sites:
         print(site['domain'])
@@ -28,4 +28,4 @@ def crawl():
                     print(title_element.attr('href'))
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 6000)
+    app.run(host = '0.0.0.0', port = 5200)
