@@ -2,7 +2,7 @@ version: '3'
 
 services:
   crawler:
-    build: ./
+    image: haitranquangofficial/graduation:crawler
     ports:
       - 5200:5200
     restart: always
