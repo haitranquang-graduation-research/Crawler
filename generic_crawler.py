@@ -27,9 +27,14 @@ def crawl():
                 print(len(title_elements))
                 for title_element in title_elements:
                     url = title_element.attr('href')
+                    if url.startswith('/'):
+                        url = url[1:]
                     if site['name'] not in url:
                         url = site['domain'] + url
                     print(url)
+                    url_dto = {}
+                    url_dto['url'] = url
+                    requests.post(config.get_parser_url(), json=url_dto)
     return 'Success'
 
 
