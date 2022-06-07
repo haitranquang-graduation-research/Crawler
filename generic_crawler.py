@@ -8,7 +8,8 @@ app = Flask(__name__)
 api = Api(app)
 print('Hello')
 
-@app.route('/crawl', methods = ['GET'])
+
+@app.route('/crawl', methods=['GET'])
 def crawl():
     rq = requests.get(config.get_news_specs_url())
     sites = rq.json()
@@ -25,7 +26,12 @@ def crawl():
                     element['path']).items()]
                 print(len(title_elements))
                 for title_element in title_elements:
-                    print(title_element.attr('href'))
+                    url = title_element.attr('href')
+                    if site['name'] not in url:
+                        url = site['domain'] + url
+                    print(url)
+    return 'Success'
+
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 5200)
+    app.run(host='0.0.0.0', port=5200)
