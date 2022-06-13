@@ -3,4 +3,4 @@ def get_news_specs_url():
 def get_news_rank_url():
     return "https://webrank.vn/?catName=News_and_Media"
 def get_parser_url():
-    return ""
+    return "http://parser:5090/parser"

@@ -4,5 +4,10 @@ services:
   crawler:
     image: haitranquangofficial/graduation:crawler
     ports:
-      - 5200:5200
+      - 21055:5200
     restart: always
+  parser:
+    image: haitranquangofficial/graduation:parser
+    restart: always
+    ports:
+      - 21056:5090

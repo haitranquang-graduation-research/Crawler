@@ -21,20 +21,23 @@ def crawl():
 
         for element in site['elements']:
             if (element['type'] == 'HREF'):
-                print(element['path'])
+                # print(element['path'])
                 title_elements = [title for title in pq(
                     element['path']).items()]
-                print(len(title_elements))
+                # print(len(title_elements))
                 for title_element in title_elements:
-                    url = title_element.attr('href')
-                    if url.startswith('/'):
-                        url = url[1:]
-                    if site['name'] not in url:
-                        url = site['domain'] + url
-                    print(url)
-                    url_dto = {}
-                    url_dto['url'] = url
-                    requests.post(config.get_parser_url(), json=url_dto)
+                    try:
+                        url = title_element.attr('href')
+                        if url.startswith('/'):
+                            url = url[1:]
+                        if site['name'] not in url:
+                            url = site['domain'] + url
+                        # print(url)
+                        url_dto = {}
+                        url_dto['url'] = url
+                        requests.post(config.get_parser_url(), json=url_dto)
+                    except:
+                        continue
     return 'Success'
 
 
