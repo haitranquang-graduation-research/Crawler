@@ -40,6 +40,17 @@ def crawl():
                         continue
     return 'Success'
 
+@app.route('/recrawl', methods=['GET'])
+def recrawl():
+    rq = requests.get(config.get_missing_data_url())
+    urls = rq.json()
+    for url in urls:
+        try:
+            print(url)
+            requests.post(config.get_parser_url(), json=url)
+        except:
+            continue
+    return 'Success'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5200)
