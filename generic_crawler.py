@@ -14,7 +14,7 @@ def crawl():
     rq = requests.get(config.get_news_specs_url())
     sites = rq.json()
     for site in sites:
-        print(site['domain'])
+        # print(site['domain'])
         rq = requests.get(site['domain'])
         r = rq.text.encode("utf-8")
         pq = PyQuery(r)
@@ -30,7 +30,7 @@ def crawl():
                         url = title_element.attr('href')
                         if url.startswith('/'):
                             url = url[1:]
-                        if site['name'] not in url:
+                        if (site['name'] not in url) and (not url.startswith('https')):
                             url = site['domain'] + url
                         # print(url)
                         url_dto = {}
