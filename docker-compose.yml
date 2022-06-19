@@ -11,6 +11,3 @@ services:
     restart: always
     ports:
       - 21056:5090
-  task-scheduler:
-    image: haitranquangofficial/graduation:task-scheduler
-    restart: always
