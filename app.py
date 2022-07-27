@@ -1,4 +1,4 @@
-
+import random
 import requests
 from pyquery import PyQuery
 from flask_restful import Api, Resource
@@ -7,6 +7,7 @@ import config
 app = Flask(__name__)
 api = Api(app)
 
+url_list = []
 
 def general_crawl(url, site):
     rq = requests.get(url)
@@ -26,9 +27,10 @@ def general_crawl(url, site):
                     if (site['name'] not in url) and (not url.startswith('https')):
                         url = site['domain'] + url
                     # print(url)
-                    url_dto = {}
-                    url_dto['url'] = url
-                    requests.post(config.get_parser_url(), json=url_dto)
+                    # url_dto = {}
+                    # url_dto['url'] = url
+                    # requests.post(config.get_parser_url(), json=url_dto, timeout=1)
+                    url_list.append(url)
                 except:
                     continue
 
@@ -39,9 +41,18 @@ def crawl():
     sites = rq.json()
     for site in sites:
         # print(site['domain'])
-        general_crawl(site['domain'], site)
-        for path in site['crawlPaths']:
-            general_crawl(path['path'], site)
+        try:
+            general_crawl(site['domain'], site)
+            for path in site['crawlPaths']:
+                general_crawl(path['path'], site)
+        except:
+            continue
+    random.shuffle(url_list)
+    for url in url_list:
+        # print(url)
+        url_dto = {}
+        url_dto['url'] = url
+        requests.post(config.get_parser_url(), json=url_dto)
     return 'Success'
 
 
